@@ -13,7 +13,7 @@ class App extends Component {
     }
 
     handleSubmit() {
-        fetch('http://127.0.0.1:8000/api/contacts/', {
+        fetch(process.env.REACT_APP_API_URL, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
