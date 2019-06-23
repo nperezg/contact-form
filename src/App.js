@@ -5,13 +5,27 @@ class App extends Component {
         super()
         this.state = {
             email: "",
-            message: ""
+            message: "",
+            alert: ""
         }
         this.handleChange = this.handleChange.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
     }
 
     handleSubmit() {
-
+        fetch('http://127.0.0.1:8000/api/contacts/', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: this.state['email'],
+                message: this.state['message'],
+            })
+        })
+            .then(response => response.json())
+            .then(json => this.setState({ alert: json.message }));
     }
 
     // Change to use arrow functions
@@ -26,6 +40,7 @@ class App extends Component {
         return (
             <main>
                 <form>
+                    <label>{this.state.alert}</label>
                     <input
                         type="email"
                         name="email"
@@ -35,7 +50,7 @@ class App extends Component {
                         required={true}
                     />
                     <input
-                        type="message"
+                        type="textarea"
                         name="message"
                         value={this.state.message}
                         onChange={this.handleChange}
