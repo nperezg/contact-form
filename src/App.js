@@ -12,7 +12,8 @@ class App extends Component {
         this.handleSubmit = this.handleSubmit.bind(this)
     }
 
-    handleSubmit() {
+    handleSubmit(event) {
+        event.preventDefault()
         fetch(process.env.REACT_APP_API_URL, {
             method: 'POST',
             headers: {
@@ -25,21 +26,22 @@ class App extends Component {
             })
         })
             .then(response => response.json())
-            .then(json => this.setState({ alert: json.message }));
+            .then(json => this.setState({ alert: json.message }))
     }
 
     // Change to use arrow functions
     handleChange(event) {
         const { name, value } = event.target
         this.setState({
-            [name]: value
+            [name]: value,
+            alert: ""
         })
     }
 
     render() {
         return (
             <main>
-                <form>
+                <form onSubmit={this.handleSubmit}>
                     <label>{this.state.alert}</label>
                     <input
                         type="email"
@@ -58,8 +60,7 @@ class App extends Component {
                         required={true}
                     />
                     <button
-                        type="button"
-                        onClick={this.handleSubmit}
+                        type="submit"
                     >
                         Submit
                     </button>
